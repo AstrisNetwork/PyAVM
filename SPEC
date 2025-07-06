@@ -1,0 +1,33 @@
+(r0 - r15) - argumenty funkcji
+(r16 - r31) - zwracane dane
+r32+ - rejestry użytkowe
+
+WSZYSTKIE ID REJESTRÓW MAJĄ 2 BAJTY!!!!!!
+
+0x00    ADD     Dodaje                  ; ADD r3, r1, r2        | r3 = r1 + r2
+0x01    SUB     Odejmuje                ; SUB r3, r1, r2        | r3 = r1 - r2
+0x02    MUL     Mnoży                   ; MUL r3, r1, r2        | r3 = r1 * r2
+0x03    DIV     Dzielenie (całkowite)   ; DIV r3, r1, r2        | r3 = r1 // r2
+0x04    MOD     Modulo                  ; MOD r3, r1, r2        | r3 = r1 % r2
+0x06    INC     Inkrementacja           ; INC r1                | r1++
+0x07    DEC     Dekrementacja           ; DEC r1                | r1--
+
+0x10    EQUAL   Operator "="            ; r1 EQUAL r2
+0x11    BIGGER   Operator ">"           ; r1 BIGGER r2
+0x12    LOWER   Operator "<"            ; r1 LOWER r2
+
+0x20    SET4    Ustawienie wartości     ; SET r1, <4 bytes>
+0x21    SET8    Ustawienie wartości     ; SET r1, <8 bytes>
+0x22    SET16   Ustawienie wartości     ; SET r1, <16 bytes>
+0x23    SET20   Ustawienie wartości     ; SET r1, <20 bytes>
+0x24    SET     Ustawienie wartości     ; SET r1, <32 bytes>
+0x25    MOV     Przeniesienie wartości  ; MOV r1, r2            | r1 = r2
+0x26    STORE   Zapianie w storage      ; STORE <32 bytes - key>, r1
+0x27    LOAD    Załadowanie ze storage  ; LOAD r1, <32 bytes - key>
+
+0x30    FNS     Początek bloku funkcji  ; FNS <2 bytes - function id>
+0x31    FNE     Koniec bloku funkcji    ; FNE
+0x32    GOTO    Wywołanie funkcji       ; GOTO <2 bytes - function id>
+0x33    IFS     Początek bloku if       ; IFS r1 EQUAL r2
+0x34    IFE     Koniec bloku if         ; IFE
+0x35    END     Zatrzymuje wykonywanie  ; END
