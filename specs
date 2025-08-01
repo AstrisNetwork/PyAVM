@@ -1,0 +1,61 @@
+# Rejestry
+Wszystkie rejestry mają 1 bajt ID (r0–r255)
+Zakresy:
+r0–r31 — argumenty funkcji
+r32–r63 — zwracane dane
+r64+ - rejestry ogólnego przeznaczenia
+
+| Kod  | Instrukcja | Składnia         | Opis                        |
+| ---- | ---------- | ---------------- | --------------------------- |
+| 0x00 | ADD        | `ADD rX, rY, rZ` | `rX = rY + rZ`              |
+| 0x01 | SUB        | `SUB rX, rY, rZ` | `rX = rY - rZ`              |
+| 0x02 | MUL        | `MUL rX, rY, rZ` | `rX = rY * rZ`              |
+| 0x03 | DIV        | `DIV rX, rY, rZ` | `rX = rY // rZ` (całkowite) |
+| 0x04 | MOD        | `MOD rX, rY, rZ` | `rX = rY % rZ`              |
+| 0x05 | NEG        | `NEG rX, rY`     | `rX = -rY`                  |
+| 0x06 | INC        | `INC rX`         | `rX = rX + 1`               |
+| 0x07 | DEC        | `DEC rX`         | `rX = rX - 1`               |
+
+| Kod  | Instrukcja | Składnia         | Opis                          |
+| ---- | ---------- | ---------------- | ----------------------------- |
+| 0x10 | AND        | `AND rX, rY, rZ` | `rX = rY & rZ` (bitowy AND)   |
+| 0x11 | OR         | `OR rX, rY, rZ`  | `rX = rY | rZ` (bitowy OR)    |
+| 0x12 | XOR        | `XOR rX, rY, rZ` | `rX = rY ^ rZ` (bitowy XOR)   |
+| 0x13 | NOT        | `NOT rX, rY`     | `rX = ~rY` (bitowa negacja)   |
+| 0x14 | SHL        | `SHL rX, rY, rZ` | `rX = rY << rZ` (shift left)  |
+| 0x15 | SHR        | `SHR rX, rY, rZ` | `rX = rY >> rZ` (shift right) |
+
+| Kod  | Instrukcja | Składnia         | Opis                      |
+| ---- | ---------- | ---------------- | ------------------------- |
+| 0x20 | EQ         | `EQ rX, rY, rZ`  | `rX = (rY == rZ) ? 1 : 0` |
+| 0x21 | NEQ        | `NEQ rX, rY, rZ` | `rX = (rY != rZ) ? 1 : 0` |
+| 0x22 | LT         | `LT rX, rY, rZ`  | `rX = (rY < rZ) ? 1 : 0`  |
+| 0x23 | GT         | `GT rX, rY, rZ`  | `rX = (rY > rZ) ? 1 : 0`  |
+| 0x24 | LTE        | `LTE rX, rY, rZ` | `rX = (rY <= rZ) ? 1 : 0` |
+| 0x25 | GTE        | `GTE rX, rY, rZ` | `rX = (rY >= rZ) ? 1 : 0` |
+
+| Kod  | Instrukcja | Składnia                       | Opis                                    |
+| ---- | ---------- | ------------------------------ | --------------------------------------- |
+| 0x30 | MOV        | `MOV rX, rY`                   | `rX = rY`                               |
+| 0x31 | SET1       | `SET rX, <1 bajtów>`           | Załaduj wartość stałą do rejestru       |
+| 0x32 | SET2       | `SET rX, <2 bajtów>`           | Załaduj wartość stałą do rejestru       |
+| 0x33 | SET4       | `SET rX, <4 bajtów>`           | Załaduj wartość stałą do rejestru       |
+| 0x34 | SET8       | `SET rX, <8 bajtów>`           | Załaduj wartość stałą do rejestru       |
+| 0x35 | SET20      | `SET rX, <20 bajtów>`          | Załaduj wartość stałą do rejestru       |
+| 0x36 | SET        | `SET rX, <32 bajtów>`          | Załaduj wartość stałą do rejestru       |
+| 0x37 | LOAD       | `LOAD rX, slot`                | Załaduj slot z pamięci do `rX`          |
+| 0x38 | STORE      | `STORE slot, rX`               | Zapisz rX do pamięci (slot i offset)    |
+
+| Kod  | Instrukcja | Składnia            | Opis                                   |
+| ---- | ---------- | ------------------- | -------------------------------------- |
+| 0x40 | JMP        | `JMP position`      | Skok bezwarunkowy                      |
+| 0x41 | JMPC       | `JMPC rX, position` | Skok warunkowy, jeśli `rX != 0`        |
+| 0x42 | END        | `END`               | Zakończenie programu                   |
+
+| Kod  | Instrukcja      | Składnia                                                         | Opis                                                                                               |
+| ---- | --------------- | ---------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| 0x50 | SHA3_256        | `SHA3_256 rX, slot, offset, size`                                | Oblicza hash SHA3-256 na `size` bajtach danych z pamięci (slot + offset), wynik do `rX` (32 bajty) |
+| 0x51 | ED25519_VERIFY  | `ED25519_VERIFY rX, slot_pk, slot_sig_start, slot_msg, size_msg` | Weryfikuje podpis Ed25519; podpis zajmuje 2 sloty (64 bajty). `rX=1` jeśli OK, `0` jeśli nie       |
+| 0x52 | KECCAK256       | `KECCAK256 rX, slot, offset, size`                               | Oblicza hash Keccak-256 na danych z pamięci                                                        |
+| 0x53 | BLAKE2B         | `BLAKE2B rX, slot, offset, size`                                 | Oblicza hash Blake2b na danych z pamięci                                                           |
+| 0x55 | RANDOM          | `RANDOM rX`                                                      | Generuje pseudolosową 256-bitową wartość (deterministyczną lub seedowaną)                          |
