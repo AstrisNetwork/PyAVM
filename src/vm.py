@@ -766,8 +766,8 @@ class VM:
             self.instructions.append(instr)
             self.position_map[pos] = len(self.instructions) - 1
 
-    def execute(self):
-        self.pc = 0
+    def execute(self, pc: int = 0):
+        self.pc = pc
         while self.pc < len(self.instructions):
             instr = self.instructions[self.pc]
             jump_result = instr.execute(self.state)
@@ -779,10 +779,10 @@ class VM:
             else:
                 self.pc += 1
 
-    def run(self):
+    def run(self, pc: int = 0):
         self.state.vm = self  # przekazujemy VM do MachineState (lub bezpośrednio do instrukcji, jeśli nie masz odniesienia)
         self.load_instructions()
-        self.execute()
+        self.execute(pc)
 
     def dump_registers(self):
         for i, val in enumerate(self.state.registers):
