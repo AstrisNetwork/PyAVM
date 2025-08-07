@@ -1,0 +1,31 @@
+{
+    "functions": [
+        {
+            "name": "power",
+            "args": [
+                {
+                    "name": "base",
+                    "type": "int256",
+                    "register": 1
+                },
+                {
+                    "name": "exponent",
+                    "type": "int256",
+                    "register": 2
+                }
+            ],
+            "returns": [
+                {
+                    "name": "result",
+                    "type": "int256",
+                    "register": 0
+                }
+            ],
+            "offset": 0,
+            "payable": true
+        }
+    ]
+}
+
+
+// "code": "31000120320264413200000018020000010702400000000331010031320042"

@@ -141,49 +141,55 @@ def asm_set1(tokens):
     val_bytes = pad_bytes(parse_bytes_token(tokens[2]), 1)
     return bytes([0x31, r_dst]) + val_bytes[-1:]
 
-@register("SET2")
-def asm_set2(tokens):
-    r_dst = parse_register(tokens[1])
-    val_bytes = pad_bytes(parse_bytes_token(tokens[2]), 2)
-    return bytes([0x32, r_dst]) + val_bytes[-2:]
-
 @register("SET4")
 def asm_set4(tokens):
     r_dst = parse_register(tokens[1])
     val_bytes = pad_bytes(parse_bytes_token(tokens[2]), 4)
-    return bytes([0x33, r_dst]) + val_bytes[-4:]
+    return bytes([0x32, r_dst]) + val_bytes[-4:]
 
 @register("SET8")
 def asm_set8(tokens):
     r_dst = parse_register(tokens[1])
     val_bytes = pad_bytes(parse_bytes_token(tokens[2]), 8)
-    return bytes([0x34, r_dst]) + val_bytes[-8:]
+    return bytes([0x33, r_dst]) + val_bytes[-8:]
 
 @register("SET20")
 def asm_set20(tokens):
     r_dst = parse_register(tokens[1])
     val_bytes = pad_bytes(parse_bytes_token(tokens[2]), 20)
-    return bytes([0x35, r_dst]) + val_bytes[-20:]
+    return bytes([0x34, r_dst]) + val_bytes[-20:]
 
 @register("SET32")
 def asm_set32(tokens):
     r_dst = parse_register(tokens[1])
     val_bytes = pad_bytes(parse_bytes_token(tokens[2]), 32)
-    return bytes([0x36, r_dst]) + val_bytes[-32:]
+    return bytes([0x35, r_dst]) + val_bytes[-32:]
 
 @register("LOAD")
 def asm_load(tokens):
     r_dst = parse_register(tokens[1])
     slot = int(tokens[2])
     slot_bytes = slot.to_bytes(2, "big")
-    return bytes([0x37, r_dst]) + slot_bytes
+    return bytes([0x36, r_dst]) + slot_bytes
 
 @register("STORE")
 def asm_store(tokens):
     slot = int(tokens[1])
     r_src = parse_register(tokens[2])
     slot_bytes = slot.to_bytes(2, "big")
-    return bytes([0x38]) + slot_bytes + bytes([r_src])
+    return bytes([0x37]) + slot_bytes + bytes([r_src])
+
+@register("MLOAD")
+def asm_load(tokens):
+    r_dst = parse_register(tokens[1])
+    slot = parse_register(tokens[2])
+    return bytes([0x38, r_dst, slot])
+
+@register("MSTORE")
+def asm_store(tokens):
+    slot = parse_register(tokens[1])
+    r_src = parse_register(tokens[2])
+    return bytes([0x39, slot, r_src])
 
 
 
@@ -206,6 +212,29 @@ def asm_jmpc(tokens):
 @register("END")
 def asm_end(tokens):
     return bytes([0x42])
+
+
+
+@register("CALLVALUE")
+def asm_callvalue(tokens):
+    r_dst = parse_register(tokens[1])
+    return bytes([0x50, r_dst])
+
+@register("BALANCE")
+def asm_balance(tokens):
+    r_dst = parse_register(tokens[1])
+    return bytes([0x51, r_dst])
+
+@register("TRANSFER")
+def asm_transfer(tokens):
+    r_address = parse_register(tokens[1])
+    r_amount = parse_register(tokens[2])
+    return bytes([0x52, r_address, r_amount])
+
+@register("SENDER")
+def asm_sender(tokens):
+    r_dst = parse_register(tokens[1])
+    return bytes([0x53, r_dst])
 
 
 
@@ -293,4 +322,4 @@ def assemble(asm_source: str) -> bytes:
         elif kind == "label":
             continue  # pomijamy etykiety w finalnym bajtkodzie
 
-    return b''.join(final_code)
+    return b''.join(final_code), label_offsets

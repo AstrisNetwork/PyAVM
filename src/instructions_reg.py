@@ -1,0 +1,48 @@
+from instructions import *
+
+
+# === Instruction Registry ===
+INSTRUCTION_SET = {
+    0x00: ADD,
+    0x01: SUB,
+    0x02: MUL,
+    0x03: DIV,
+    0x04: MOD,
+    0x05: NEG,
+    0x06: INC,
+    0x07: DEC,
+    
+    0x10: AND,
+    0x11: OR,
+    0x12: XOR,
+    0x13: NOT,
+    0x14: SHL,
+    0x15: SHR,
+
+    0x20: EQ,
+    0x21: NEQ,
+    0x22: LT,
+    0x23: GT,
+    0x24: LTE,
+    0x25: GTE,
+
+    0x30: MOV,
+    0x31: SET1,
+    0x32: SET4,
+    0x33: SET8,
+    0x34: SET20,
+    0x35: SET32,
+    0x36: LOAD,
+    0x37: STORE,
+    0x38: MLOAD,
+    0x39: MSTORE,
+
+    0x40: JMP,
+    0x41: JMPC,
+    0x42: END,
+
+    0x50: CALLVALUE,
+    0x51: BALANCE,
+    0x52: TRANSFER,
+    0x53: SENDER,
+}
